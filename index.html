@@ -3,24 +3,618 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sowvik Misra - AI, Automation & Art</title>
-<meta name="description" content="Portfolio of Sowvik Misra - AI & Automation Consultant and Creative Artist. Agentic AI, Copilot Studio, poetry, percussion.">
-
+<title>Sowvik Misra — AI, Automation & Art</title>
+<meta name="description" content="Portfolio of Sowvik Misra — AI & Automation Consultant and Creative Artist. Agentic AI, Copilot Studio, poetry, percussion.">
+<meta property="og:title" content="Sowvik Misra — AI, Automation & Art">
+<meta property="og:description" content="AI & Automation Consultant · Creative Artist · Bengaluru, IN">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN SYSTEM — variables, reset, base
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --f-sans:'Inter Tight',system-ui,sans-serif;
+  --f-mono:'JetBrains Mono','Courier New',monospace;
+  --f-serif:'Instrument Serif',Georgia,serif;
+  --gutter:28px;
+  --rule-w:1px;
+  --accent:oklch(0.58 0.14 35);
+  --accent-ink:#fff;
+  --shell-max:1240px;
+  --nav-h:64px;
+  --easing:cubic-bezier(0.16,1,0.3,1);
+}
+:root[data-theme="dark"]{
+  --bg:#0f0c09;
+  --bg-2:#181410;
+  --fg:#f0ebe2;
+  --fg-2:#a89f93;
+  --fg-3:#6b6358;
+  --rule:rgba(255,255,255,0.08);
+  --rule-2:rgba(255,255,255,0.14);
+}
+:root[data-theme="light"]{
+  --bg:#f8f4ef;
+  --bg-2:#eeebe4;
+  --fg:#1a1614;
+  --fg-2:#5a4f46;
+  --fg-3:#9a8f86;
+  --rule:rgba(0,0,0,0.1);
+  --rule-2:rgba(0,0,0,0.18);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--f-sans);font-size:16px;line-height:1.6;
+  min-height:100vh;overflow-x:hidden;
+  transition:background 280ms ease,color 280ms ease;
+}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{font-family:inherit;cursor:pointer}
+img{max-width:100%;display:block}
 
-<!-- shared site chrome -->
-<link rel="stylesheet" href="../css/01-base.css">
-<link rel="stylesheet" href="../css/02-chrome.css">
-<link rel="stylesheet" href="../css/04-pages.css">
-<link rel="stylesheet" href="../css/05-nerdy.css">
-<link rel="stylesheet" href="../css/06-waves.css">
-<link rel="stylesheet" href="../css/07-site-bg.css">
-<!-- this page -->
-<link rel="stylesheet" href="sm-portfolio.css">
+/* ============================================================
+   SITE BACKGROUND
+   ============================================================ */
+#site-bg-canvas{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  opacity:.35;transition:opacity 600ms ease;
+}
+:root[data-theme="light"] #site-bg-canvas{opacity:.15}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.marquee{
+  position:relative;z-index:50;
+  height:30px;background:var(--bg-2);border-bottom:var(--rule-w) solid var(--rule);
+  overflow:hidden;display:flex;align-items:center;
+  font-family:var(--f-mono);font-size:10.5px;white-space:nowrap;
+}
+.marquee .track{
+  display:inline-flex;align-items:center;gap:0;
+  animation:mq-scroll 60s linear infinite;will-change:transform;
+}
+.marquee .track span{display:inline-flex;align-items:center;gap:8px;padding:0 4px}
+.marquee .track .k{color:var(--fg-3);text-transform:uppercase;letter-spacing:.12em}
+.marquee .track .v{color:var(--fg-2)}
+.marquee .track .dot{color:var(--fg-3);padding:0 10px}
+@keyframes mq-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ============================================================
+   SHELL
+   ============================================================ */
+.shell{max-width:var(--shell-max);margin:0 auto;padding:0 var(--gutter)}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:32px;
+  padding:18px 0;
+  background:var(--bg);border-bottom:var(--rule-w) solid var(--rule);
+  transition:background 280ms ease,border-color 280ms ease;
+}
+.wordmark{
+  display:flex;align-items:center;gap:14px;flex-shrink:0;
+  font-family:var(--f-sans);font-weight:500;font-size:14px;letter-spacing:-.01em;
+  color:var(--fg);
+}
+.wordmark .mark{
+  display:inline-block;width:22px;height:22px;border-radius:50%;
+  background:var(--accent);flex-shrink:0;
+}
+.wordmark .sub{
+  font-family:var(--f-mono);font-size:10px;color:var(--fg-3);
+  text-transform:uppercase;letter-spacing:.12em;margin-left:4px;
+}
+.nav-links{
+  display:flex;align-items:center;gap:6px;margin-left:auto;
+  flex-wrap:nowrap;
+}
+.navlink{
+  font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--fg-3);padding:6px 10px;transition:color 160ms ease;position:relative;
+}
+.navlink:hover,.navlink[aria-current="page"]{color:var(--fg)}
+.navlink[aria-current="page"]::before{
+  content:"";position:absolute;bottom:-1px;left:10px;right:10px;
+  height:1px;background:var(--accent);
+}
+.theme-toggle{
+  display:inline-flex;align-items:center;gap:6px;
+  background:none;border:1px solid var(--rule-2);
+  padding:5px 10px;font-family:var(--f-mono);font-size:10px;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--fg-3);
+  transition:all 160ms ease;
+}
+.theme-toggle:hover{color:var(--fg);border-color:var(--fg-3)}
+.theme-toggle .pip{
+  width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;
+}
+
+/* ============================================================
+   TWEAKS PANEL
+   ============================================================ */
+.tweaks{
+  position:fixed;bottom:24px;right:24px;z-index:180;
+  background:var(--bg-2);border:1px solid var(--rule-2);
+  width:230px;padding:0;display:none;flex-direction:column;
+  box-shadow:0 20px 60px -20px rgba(0,0,0,.5);
+}
+.tweaks.open{display:flex}
+.tweaks header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:11px;color:var(--fg-2);text-transform:uppercase;letter-spacing:.1em;
+}
+.tweaks header button{
+  background:none;border:0;color:var(--fg-3);font-size:16px;line-height:1;padding:0 2px;
+  transition:color 160ms ease;
+}
+.tweaks header button:hover{color:var(--fg)}
+.tw-row{padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:8px}
+.tw-row:last-child{border-bottom:0}
+.tw-row .k{font-family:var(--f-mono);font-size:10px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em}
+.swatches{display:flex;gap:6px}
+.sw{
+  width:22px;height:22px;border-radius:50%;border:2px solid transparent;
+  transition:border-color 160ms ease;cursor:pointer;padding:0;
+}
+.sw.sel,.sw:hover{border-color:var(--fg)}
+.seg{display:flex;border:1px solid var(--rule-2);overflow:hidden}
+.seg button{
+  flex:1;background:none;border:0;padding:6px;
+  font-family:var(--f-mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--fg-3);transition:all 160ms ease;border-right:1px solid var(--rule-2);
+}
+.seg button:last-child{border-right:0}
+.seg button.sel,.seg button:hover{background:var(--fg);color:var(--bg)}
+
+/* ============================================================
+   HERO / PRETEXT / TYPEWRITER
+   ============================================================ */
+.hero{padding:72px 0 64px}
+.pretext{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--f-mono);font-size:13px;color:var(--fg-3);
+  margin-bottom:28px;background:var(--bg-2);
+  border:1px solid var(--rule);padding:8px 14px;
+}
+.tw-key{color:var(--accent);white-space:nowrap}
+.tw-val{color:var(--fg-2);min-width:2ch}
+.tw-cursor{
+  display:inline-block;width:8px;height:14px;background:var(--accent);
+  animation:blink .85s steps(1) infinite;vertical-align:middle;margin-left:2px;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.label{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em}
+.label.mono,.mono{font-family:var(--f-mono)}
+
+/* ============================================================
+   TERMINAL BLOCK
+   ============================================================ */
+.terminal{
+  border:1px solid var(--rule-2);background:var(--bg-2);
+  overflow:hidden;margin-top:36px;
+}
+.term-bar{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--rule);
+  font-family:var(--f-mono);font-size:11px;color:var(--fg-3);overflow:hidden;
+}
+.term-bar .dot{
+  width:10px;height:10px;border-radius:50%;flex-shrink:0;
+}
+.term-bar .dot.red{background:#ff5f56}
+.term-bar .dot.yel{background:#ffbd2e}
+.term-bar .dot.grn{background:#27c93f}
+.term-bar .path{color:var(--fg-2)}
+.term-bar .path b{color:var(--fg)}
+.term-bar .cursor{
+  display:inline-block;width:7px;height:13px;background:var(--fg-3);
+  animation:blink .85s steps(1) infinite;
+}
+
+/* Wave wrap */
+.wave-wrap{
+  position:relative;min-height:220px;overflow:hidden;background:var(--bg);
+}
+.wave-canvas{
+  position:absolute;inset:0;width:100%;height:100%;display:block;
+}
+.wave-overlay{
+  position:absolute;inset:0;padding:16px 18px;
+  display:flex;flex-direction:column;justify-content:space-between;gap:10px;
+  font-family:var(--f-mono);font-size:11px;
+}
+.wave-overlay .row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.wave-overlay .k{color:var(--fg-3)}
+.wave-overlay .v{color:var(--fg-2);font-weight:500}
+.wave-overlay .pulse{
+  display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);
+  animation:pulse-ring 1.8s ease infinite;margin-right:4px;
+  box-shadow:0 0 0 0 var(--accent);
+}
+@keyframes pulse-ring{
+  0%{box-shadow:0 0 0 0 oklch(from var(--accent) l c h / 0.6)}
+  70%{box-shadow:0 0 0 6px oklch(from var(--accent) l c h / 0)}
+  100%{box-shadow:0 0 0 0 oklch(from var(--accent) l c h / 0)}
+}
+.wave-overlay .badge{
+  font-family:var(--f-mono);font-size:10px;color:var(--fg-3);
+  border:1px solid var(--rule);padding:3px 8px;
+}
+.vu{display:flex;align-items:flex-end;gap:2px;height:20px}
+.vu i{
+  display:inline-block;width:3px;background:var(--accent);
+  animation:vu-dance 0.4s ease infinite alternate;opacity:.7;
+}
+.vu i:nth-child(1){animation-duration:.32s;animation-delay:0s}
+.vu i:nth-child(2){animation-duration:.48s;animation-delay:.05s}
+.vu i:nth-child(3){animation-duration:.36s;animation-delay:.1s}
+.vu i:nth-child(4){animation-duration:.52s;animation-delay:.02s}
+.vu i:nth-child(5){animation-duration:.28s;animation-delay:.08s}
+.vu i:nth-child(6){animation-duration:.44s;animation-delay:.14s}
+.vu i:nth-child(7){animation-duration:.38s;animation-delay:.06s}
+.vu i:nth-child(8){animation-duration:.56s;animation-delay:.12s}
+@keyframes vu-dance{
+  from{height:3px}
+  to{height:calc(3px + 14px * var(--rand,1))}
+}
+.vu i:nth-child(1){--rand:.4}
+.vu i:nth-child(2){--rand:.9}
+.vu i:nth-child(3){--rand:.6}
+.vu i:nth-child(4){--rand:1}
+.vu i:nth-child(5){--rand:.5}
+.vu i:nth-child(6){--rand:.7}
+.vu i:nth-child(7){--rand:.3}
+.vu i:nth-child(8){--rand:.8}
+
+/* Boot log */
+.boot{
+  font-family:var(--f-mono);font-size:11px;
+  padding:12px 14px;border-top:1px solid var(--rule);
+  display:flex;flex-direction:column;gap:3px;
+  max-height:140px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--rule) transparent;
+}
+.boot .ln{display:flex;gap:8px;align-items:baseline;white-space:pre}
+.boot .t{color:var(--fg-3)}
+.boot .v{color:var(--fg-2);white-space:normal}
+.lvl-ok{color:#27c93f;font-weight:500}
+.lvl-run{color:#ffbd2e;font-weight:500}
+.lvl-info{color:#58a5f0;font-weight:500}
+.lvl-warn{color:#ff9800;font-weight:500}
+
+/* ============================================================
+   IMPACT STATS
+   ============================================================ */
+.impact{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);
+  padding-top:36px;margin-top:36px;border-top:var(--rule-w) solid var(--rule);
+}
+.impact .stat{border-left:1px solid var(--rule);padding-left:18px}
+.impact .stat .v{font-family:var(--f-sans);font-weight:500;font-size:clamp(28px,3.2vw,44px);letter-spacing:-.025em;line-height:1;color:var(--fg);margin-bottom:8px}
+.impact .stat .l{font-family:var(--f-mono);font-size:10.5px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em;line-height:1.4}
+@media(max-width:900px){.impact{grid-template-columns:1fr 1fr}}
+
+/* ============================================================
+   AWARDS STRIP
+   ============================================================ */
+.awards-strip{
+  margin-top:28px;border-left:2px solid var(--accent);padding:10px 16px;
+  font-size:14px;color:var(--fg-2);line-height:1.55;background:var(--bg-2);
+}
+.awards-strip b{color:var(--fg);font-weight:500}
+
+/* ============================================================
+   CTA ROW
+   ============================================================ */
+.cta-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:28px;padding-top:22px;border-top:1px solid var(--rule)}
+.cta-row a{
+  display:inline-flex;gap:8px;align-items:center;
+  font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--fg);border-bottom:1px solid transparent;padding-bottom:2px;transition:all 180ms ease;
+}
+.cta-row a:hover{border-bottom-color:var(--accent);color:var(--accent)}
+.cta-row a svg{width:14px;height:14px}
+
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
+.sec{padding:80px 0;border-top:var(--rule-w) solid var(--rule);position:relative}
+.sec .sec-head{display:flex;gap:20px;align-items:center;margin-bottom:44px}
+.sec .sec-head .bar{flex:1;height:1px;background:var(--rule)}
+.sec .sec-head h2{margin:0;font-family:var(--f-sans);font-style:italic;font-weight:400;font-size:clamp(24px,2.4vw,36px);color:var(--fg);letter-spacing:-.018em}
+.sec .sec-head .tag{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em}
+
+/* ============================================================
+   SKILL COLUMNS
+   ============================================================ */
+.skill-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gutter)}
+.skill-cols .col h3{display:flex;gap:10px;align-items:center;font-family:var(--f-sans);font-weight:500;font-size:17px;margin:0 0 16px;letter-spacing:-.01em}
+.skill-cols .col h3 .d{display:inline-block;width:8px;height:8px;border-radius:50%}
+.skill-cols .col .chips{display:flex;flex-wrap:wrap;gap:6px}
+.skill-cols .col .chips span{
+  font-family:var(--f-mono);font-size:11.5px;padding:4px 10px;
+  color:var(--fg-2);background:var(--bg-2);border:1px solid var(--rule);
+}
+@media(max-width:900px){.skill-cols{grid-template-columns:1fr}}
+
+/* ============================================================
+   CARD GRID
+   ============================================================ */
+.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+@media(max-width:700px){.card-grid{grid-template-columns:1fr}}
+.card{
+  position:relative;padding:22px;border:1px solid var(--rule);background:var(--bg);
+  cursor:pointer;transition:border-color 200ms ease,transform 200ms ease,box-shadow 200ms ease;
+  display:flex;flex-direction:column;min-height:180px;
+}
+.card:hover{border-color:var(--fg-3);transform:translateY(-2px);box-shadow:0 20px 40px -20px rgba(0,0,0,.15)}
+:root[data-theme="dark"] .card:hover{box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+.card .card-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.card .card-tags span{font-family:var(--f-mono);font-size:10px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em}
+.card .card-title{font-family:var(--f-sans);font-weight:500;font-size:19px;letter-spacing:-.015em;margin:0 0 10px;color:var(--fg);line-height:1.25}
+.card:hover .card-title{color:var(--accent)}
+.card .card-desc{font-size:14px;line-height:1.5;color:var(--fg-2);margin:0 0 14px;flex:1}
+.card .card-more{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em;margin-top:auto;display:flex;align-items:center;gap:6px;opacity:0;transition:opacity 200ms ease}
+.card:hover .card-more{opacity:1;color:var(--accent)}
+.card .card-arrow{position:absolute;top:22px;right:22px;opacity:0;transition:all 200ms ease;color:var(--fg-3)}
+.card:hover .card-arrow{opacity:1;transform:translateX(3px);color:var(--fg)}
+
+/* ============================================================
+   CERTIFICATIONS
+   ============================================================ */
+.cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(max-width:700px){.cert-grid{grid-template-columns:1fr}}
+.cert{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border:1px solid var(--rule);background:var(--bg);transition:border-color 160ms ease}
+.cert:hover{border-color:var(--fg-3)}
+.cert .t{font-family:var(--f-sans);font-weight:500;font-size:14px;color:var(--fg);margin:0;line-height:1.3}
+.cert .i{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+
+/* ============================================================
+   CREATIVE TIMELINE
+   ============================================================ */
+.timeline{display:grid;gap:36px;padding-left:0}
+.tl-item{position:relative;padding-left:32px;border-left:2px solid var(--rule);padding-bottom:8px;padding-top:4px}
+.tl-item::before{content:"";position:absolute;left:-9px;top:8px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--rule);transition:border-color 180ms ease}
+.tl-item:hover{border-left-color:var(--accent)}
+.tl-item:hover::before{border-color:var(--accent)}
+.tl-item .tl-type{display:inline-block;font-family:var(--f-mono);font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;font-weight:500}
+.tl-item .tl-title{font-family:var(--f-sans);font-weight:500;font-size:22px;letter-spacing:-.015em;margin:0 0 12px;color:var(--fg);line-height:1.2}
+.tl-item .tl-excerpt{font-family:var(--f-serif);font-style:italic;font-size:19px;line-height:1.45;color:var(--fg-2);margin:0 0 14px;white-space:pre-line}
+.tl-item .tl-cta{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em;cursor:pointer;background:none;border:0;padding:0;display:inline-flex;gap:6px;align-items:center;transition:color 180ms ease}
+.tl-item .tl-cta:hover{color:var(--accent)}
+
+/* ============================================================
+   CONTACT BLOCK
+   ============================================================ */
+.contact-block{padding:96px 0 40px;border-top:var(--rule-w) solid var(--rule);text-align:center}
+.contact-block .k{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.15em;margin-bottom:18px}
+.contact-block h2{font-family:var(--f-sans);font-weight:500;font-size:clamp(36px,5vw,64px);letter-spacing:-.028em;line-height:1.02;margin:0 0 22px;color:var(--fg)}
+.contact-block .sub{font-size:16px;color:var(--fg-2);max-width:55ch;margin:0 auto 36px;line-height:1.55}
+.contact-block .links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.contact-block .links a{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:12px 18px;border:1px solid var(--rule);font-family:var(--f-mono);font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--fg);transition:all 180ms ease;background:var(--bg);
+}
+.contact-block .links a:hover{border-color:var(--accent);color:var(--accent)}
+.contact-block .links a svg{width:16px;height:16px}
+.copy-email-btn:hover{border-color:var(--accent)!important;color:var(--accent)!important}
+.contact-block .copy-toast{
+  display:inline-block;margin-left:8px;font-family:var(--f-mono);font-size:11px;color:var(--accent);
+  opacity:0;transform:translateY(4px);transition:all 180ms ease;
+}
+.contact-block .copy-toast.show{opacity:1;transform:translateY(0)}
+.contact-block .meta{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.12em}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.sm-modal-overlay{
+  position:fixed;inset:0;z-index:200;display:none;
+  background:rgba(12,10,8,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:24px;
+  opacity:0;transition:opacity 260ms ease;
+}
+.sm-modal-overlay.open{display:flex;opacity:1}
+.sm-modal{
+  width:100%;max-width:680px;max-height:80vh;background:var(--bg);
+  border:1px solid var(--rule-2);box-shadow:0 60px 120px -40px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;
+  transform:translateY(12px) scale(.98);transition:transform 280ms var(--easing);
+  position:relative;overflow:hidden;
+}
+.sm-modal-overlay.open .sm-modal{transform:translateY(0) scale(1)}
+.sm-modal header{display:flex;justify-content:space-between;align-items:flex-start;padding:24px 28px;border-bottom:1px solid var(--rule);gap:20px;background:var(--bg-2)}
+.sm-modal header .type{font-family:var(--f-mono);font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.15em;margin-bottom:10px;font-weight:500}
+.sm-modal header .title{font-family:var(--f-sans);font-weight:500;font-size:24px;letter-spacing:-.02em;margin:0;color:var(--fg);line-height:1.2}
+.sm-modal header button{
+  background:none;border:1px solid var(--rule);padding:6px 10px;cursor:pointer;
+  font-family:var(--f-mono);font-size:11px;color:var(--fg-2);text-transform:uppercase;letter-spacing:.1em;
+  transition:all 160ms ease;flex-shrink:0;
+}
+.sm-modal header button:hover{color:var(--fg);border-color:var(--fg-3)}
+.sm-modal .body{padding:28px;overflow-y:auto;font-size:15px;line-height:1.65;color:var(--fg-2);white-space:pre-wrap}
+.sm-modal footer{padding:16px 28px;border-top:1px solid var(--rule);background:var(--bg-2);display:flex;justify-content:flex-end;gap:12px}
+.sm-modal footer a{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:9px 16px;background:var(--fg);color:var(--bg);
+  font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+  transition:all 160ms ease;
+}
+.sm-modal footer a:hover{background:var(--accent);color:var(--accent-ink)}
+
+/* ============================================================
+   REEL MODAL
+   ============================================================ */
+.reel-overlay{
+  position:fixed;inset:0;z-index:220;display:none;
+  background:rgba(8,6,5,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  align-items:center;justify-content:center;padding:24px;
+  opacity:0;transition:opacity 260ms ease;
+}
+.reel-overlay.open{display:flex;opacity:1}
+.reel-shell{
+  width:100%;max-width:min(1280px,94vw);
+  background:#0a0908;color:#f1ede5;
+  border:1px solid rgba(241,237,229,.12);
+  box-shadow:0 80px 160px -50px rgba(0,0,0,.9);
+  display:flex;flex-direction:column;
+  transform:translateY(14px) scale(.985);transition:transform 300ms var(--easing);
+  position:relative;overflow:hidden;
+}
+.reel-overlay.open .reel-shell{transform:translateY(0) scale(1)}
+.reel-head{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:18px 22px;border-bottom:1px solid rgba(241,237,229,.1);gap:20px;background:#0f0d0b;
+}
+.reel-type{font-family:var(--f-mono);font-size:10.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:6px;font-weight:500}
+.reel-title{font-family:var(--f-sans);font-weight:500;font-size:20px;letter-spacing:-.015em;margin:0;color:#f1ede5;line-height:1.2}
+.reel-head button{
+  background:none;border:1px solid rgba(241,237,229,.18);padding:7px 12px;cursor:pointer;
+  font-family:var(--f-mono);font-size:11px;color:#b7b2a8;text-transform:uppercase;letter-spacing:.12em;
+  transition:all 160ms ease;flex-shrink:0;
+}
+.reel-head button:hover{color:#fff;border-color:rgba(241,237,229,.45);background:rgba(241,237,229,.04)}
+.reel-frame-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#000}
+.reel-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.reel-foot{
+  padding:12px 22px;border-top:1px solid rgba(241,237,229,.1);
+  background:#0f0d0b;display:flex;justify-content:space-between;align-items:center;gap:16px;
+}
+.reel-meta{font-family:var(--f-mono);font-size:10.5px;color:#6d6860;text-transform:uppercase;letter-spacing:.1em}
+.reel-foot a{
+  font-family:var(--f-mono);font-size:11px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.12em;text-decoration:none;
+  border:1px solid rgba(198,106,62,.35);padding:7px 12px;transition:all 160ms ease;
+}
+.reel-foot a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ============================================================
+   HERO TYPOGRAPHY
+   ============================================================ */
+.sm-hero .eyebrow{display:flex;gap:14px;align-items:center;margin-bottom:28px}
+.sm-hero .eyebrow .bar{flex:1;height:1px;background:var(--rule)}
+.sm-hero .role{font-family:var(--f-sans);font-weight:500;font-size:clamp(36px,5.4vw,78px);line-height:1.02;letter-spacing:-.03em;margin:0 0 22px;color:var(--fg)}
+.sm-hero .tagline{font-family:var(--f-serif);font-style:italic;font-size:clamp(22px,2.4vw,32px);line-height:1.35;color:var(--fg-2);max-width:32ch;margin:0 0 32px}
+.sm-hero .tagline::before{content:"\201C";margin-right:4px;color:var(--accent)}
+.sm-hero .tagline::after{content:"\201D";margin-left:2px;color:var(--accent)}
+.sm-hero .about-body{font-size:16px;line-height:1.65;color:var(--fg-2);max-width:68ch;margin:0}
+
+/* ============================================================
+   MOBILE NAV
+   ============================================================ */
+.nav-hamburger{
+  display:none;width:40px;height:40px;padding:0;background:none;border:1px solid var(--rule);
+  cursor:pointer;position:relative;align-items:center;justify-content:center;
+  transition:border-color 160ms ease;
+}
+.nav-hamburger:hover{border-color:var(--fg-3)}
+.nav-hamburger span{
+  position:absolute;left:10px;right:10px;height:1.5px;background:var(--fg);
+  transition:transform 220ms ease,opacity 180ms ease,top 220ms ease;
+}
+.nav-hamburger span:nth-child(1){top:13px}
+.nav-hamburger span:nth-child(2){top:19px}
+.nav-hamburger span:nth-child(3){top:25px}
+.nav-hamburger.open span:nth-child(1){top:19px;transform:rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){top:19px;transform:rotate(-45deg)}
+
+@media(max-width:860px){
+  .nav{display:grid;grid-template-columns:1fr auto;gap:12px;padding:16px 0}
+  .wordmark .sub{display:none}
+  .nav-hamburger{display:inline-flex}
+  .nav .nav-links{
+    position:fixed;inset:0 0 0 auto;width:min(84vw,340px);
+    display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;
+    gap:0;padding:88px 28px 28px;
+    background:var(--bg);border-left:1px solid var(--rule);
+    transform:translateX(100%);transition:transform 260ms var(--easing);
+    z-index:150;overflow-y:auto;margin-left:0;
+  }
+  .nav .nav-links.open{transform:translateX(0)}
+  .nav .nav-links li{width:100%;border-bottom:1px solid var(--rule)}
+  .nav .nav-links li:last-child{border-bottom:0;margin-top:18px}
+  .nav .nav-links a.navlink{display:block;padding:18px 0;font-size:13px;color:var(--fg);letter-spacing:.1em}
+  .nav .nav-links a.navlink[aria-current="page"]::before{display:none}
+  .nav .nav-links::before{
+    content:"";position:fixed;inset:0;right:min(84vw,340px);
+    background:rgba(0,0,0,.35);backdrop-filter:blur(2px);opacity:0;pointer-events:none;
+    transition:opacity 220ms ease;
+  }
+  .nav .nav-links.open::before{opacity:1}
+}
+@media(max-width:860px){
+  .term-bar{flex-wrap:wrap;gap:6px;font-size:10px;padding:8px 10px}
+  .term-bar .path{width:100%;order:5;margin-top:4px}
+  .wave-wrap{min-height:200px}
+  .wave-overlay{padding:12px 14px;font-size:10px;gap:8px}
+  .wave-overlay .row{gap:10px 14px;flex-wrap:wrap;align-items:flex-start}
+  .wave-overlay .badge{font-size:9.5px;padding:2px 6px}
+  .vu{display:none}
+  .boot{font-size:10.5px;padding:12px 14px;max-height:110px;overflow-x:auto}
+  .boot .ln{white-space:nowrap}
+  .sm-hero .eyebrow{flex-wrap:wrap;gap:8px}
+  .sm-hero .eyebrow .bar{display:none}
+  .sm-hero .role{font-size:clamp(34px,8.5vw,44px)}
+  .sm-hero .tagline{font-size:clamp(20px,5.2vw,26px)}
+  .sm-hero .about-body{font-size:15px}
+  .cta-row{gap:14px 18px}
+  .impact{padding-top:24px;margin-top:24px;gap:18px 14px}
+  .impact .stat{padding-left:12px}
+  .impact .stat .v{font-size:clamp(24px,7vw,34px)}
+  .impact .stat .l{font-size:10px}
+  .sec{padding:56px 0}
+  .sec .sec-head{margin-bottom:28px;gap:12px}
+  .sec .sec-head .bar{display:none}
+  .card{padding:18px;min-height:0}
+  .card .card-title{font-size:17px}
+  .card .card-arrow{display:none}
+  .card .card-more{opacity:1}
+  .timeline{gap:28px}
+  .tl-item{padding-left:22px}
+  .tl-item .tl-title{font-size:19px}
+  .tl-item .tl-excerpt{font-size:17px}
+  .cert{padding:14px}
+  .cert .t{font-size:13px}
+  .contact-block{padding:64px 0 24px}
+  .contact-block h2{font-size:clamp(30px,8vw,44px)}
+  .contact-block .sub{font-size:15px}
+  .contact-block .links{gap:10px}
+  .contact-block .links a,.copy-email-btn{padding:11px 14px;font-size:11px}
+  .sm-modal{max-height:86vh}
+  .sm-modal header{padding:18px}
+  .sm-modal header .title{font-size:19px}
+  .sm-modal .body{padding:18px;font-size:14.5px}
+  .sm-modal footer{padding:14px 18px}
+  .marquee{font-size:10.5px;height:28px}
+}
+@media(max-width:460px){
+  .impact{grid-template-columns:1fr 1fr;gap:14px 10px}
+  .cta-row{flex-direction:column;align-items:flex-start;gap:10px}
+  .awards-strip{font-size:13px;padding:10px 12px}
+}
+
+/* Scroll fade-in */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 600ms ease,transform 600ms ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
 </head>
 <body>
+
+<!-- SITE BACKGROUND CANVAS -->
+<canvas id="site-bg-canvas" aria-hidden="true"></canvas>
 
 <!-- MARQUEE -->
 <div class="marquee"><div class="track" id="smMq"></div></div>
@@ -51,21 +645,20 @@
   </button>
 </nav>
 
-<main class="shell" id="smMain" data-screen-label="SM Portfolio"></main>
+<!-- MAIN CONTENT (rendered by JS) -->
+<main class="shell" id="smMain"></main>
 
-
-
-<!-- TWEAKS -->
+<!-- TWEAKS PANEL -->
 <aside class="tweaks" id="tweaks" aria-hidden="true">
   <header><span>Tweaks</span><button id="tweaksClose" aria-label="Close">×</button></header>
   <div class="tw-row">
     <span class="k">Accent</span>
     <div class="swatches" id="swAccent">
-      <button class="sw" data-h="35"  style="background:oklch(0.58 0.14 35)"></button>
-      <button class="sw" data-h="250" style="background:oklch(0.58 0.14 250)"></button>
-      <button class="sw" data-h="150" style="background:oklch(0.58 0.14 150)"></button>
-      <button class="sw" data-h="320" style="background:oklch(0.58 0.14 320)"></button>
-      <button class="sw" data-h="85"  style="background:oklch(0.65 0.14 85)"></button>
+      <button class="sw sel" data-h="35"  style="background:oklch(0.58 0.14 35)"></button>
+      <button class="sw"     data-h="250" style="background:oklch(0.58 0.14 250)"></button>
+      <button class="sw"     data-h="150" style="background:oklch(0.58 0.14 150)"></button>
+      <button class="sw"     data-h="320" style="background:oklch(0.58 0.14 320)"></button>
+      <button class="sw"     data-h="85"  style="background:oklch(0.65 0.14 85)"></button>
     </div>
   </div>
   <div class="tw-row">
@@ -77,7 +670,7 @@
     </div>
   </div>
   <div class="tw-row">
-    <span class="k">Background motion</span>
+    <span class="k">Background</span>
     <div class="seg" id="segBg">
       <button data-v="on" class="sel">On</button>
       <button data-v="off">Off</button>
@@ -120,9 +713,10 @@
   </div>
 </div>
 
-<!-- local chrome + bg (no shared chrome.js since this page is self-contained) -->
 <script>
-/* Marquee + theme toggle + tweaks + typewriter - slim local copy. */
+/* ============================================================
+   MARQUEE
+   ============================================================ */
 const MQ = [
   ["LOCATION","Bengaluru, IN · 12.97°N 77.59°E"],
   ["ROLE","AI & Automation Consultant"],
@@ -133,109 +727,637 @@ const MQ = [
   ["LISTENING","Dholak + Cajon + Darbuka"],
   ["VERSION","portfolio.v2 · build 2026.04"]
 ];
-function tickMq(){
+(function tickMq(){
   const parts = [];
-  for (let p=0; p<2; p++){
-    for (const [k,v] of MQ){
+  for(let p=0;p<2;p++){
+    for(const [k,v] of MQ){
       parts.push(`<span><span class="k">${k}</span> <span class="v">${v}</span></span><span class="dot">·</span>`);
     }
   }
   document.getElementById("smMq").innerHTML = parts.join("");
-}
-tickMq();
+})();
 
-/* reel modal */
+/* ============================================================
+   SITE BACKGROUND — subtle noise / grain canvas
+   ============================================================ */
 (function(){
-  const overlay = document.getElementById("reelModal");
-  const frame = document.getElementById("reelFrame");
-  const closeBtn = document.getElementById("reelClose");
-  if (!overlay || !frame) return;
+  const canvas = document.getElementById("site-bg-canvas");
+  const ctx = canvas.getContext("2d");
+  let W,H,raf,bgEnabled=true;
+  const dots=[];
+  function init(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=window.innerHeight;
+    dots.length=0;
+    const n=Math.min(60,Math.floor(W*H/18000));
+    for(let i=0;i<n;i++){
+      dots.push({
+        x:Math.random()*W, y:Math.random()*H,
+        r:Math.random()*1.8+0.4,
+        vx:(Math.random()-.5)*0.18, vy:(Math.random()-.5)*0.14,
+        o:Math.random()*0.25+0.05
+      });
+    }
+  }
+  function draw(){
+    if(!bgEnabled){ctx.clearRect(0,0,W,H);raf=requestAnimationFrame(draw);return;}
+    ctx.clearRect(0,0,W,H);
+    const isDark=document.documentElement.getAttribute("data-theme")==="dark";
+    const accent=[198,106,62];
+    const fg=isDark?[240,235,226]:[26,22,20];
+    // subtle gradient backdrop
+    const grd=ctx.createRadialGradient(W*.3,H*.2,0,W*.3,H*.2,W*.7);
+    if(isDark){
+      grd.addColorStop(0,"rgba(198,80,40,0.04)");
+      grd.addColorStop(1,"rgba(15,12,9,0)");
+    } else {
+      grd.addColorStop(0,"rgba(198,80,40,0.03)");
+      grd.addColorStop(1,"rgba(248,244,239,0)");
+    }
+    ctx.fillStyle=grd;
+    ctx.fillRect(0,0,W,H);
+    // drifting particles
+    for(const d of dots){
+      d.x+=d.vx; d.y+=d.vy;
+      if(d.x<0)d.x=W; if(d.x>W)d.x=0;
+      if(d.y<0)d.y=H; if(d.y>H)d.y=0;
+      ctx.beginPath();
+      ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${accent[0]},${accent[1]},${accent[2]},${d.o})`;
+      ctx.fill();
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  function start(){init();if(raf)cancelAnimationFrame(raf);draw();}
+  window.addEventListener("resize",()=>{clearTimeout(window._bgRz);window._bgRz=setTimeout(start,200);});
+  start();
+  window.__setBgEnabled=function(v){bgEnabled=v;};
+})();
 
-  const open = () => {
-    frame.src = "../Portfolio%20Ad.html";
+/* ============================================================
+   WAVE CANVAS
+   ============================================================ */
+window.mountWaveCanvas=function(canvas){
+  const ctx=canvas.getContext("2d");
+  let W,H,raf,t=0;
+  function resize(){
+    W=canvas.width=canvas.offsetWidth||1200;
+    H=canvas.height=canvas.offsetHeight||220;
+  }
+  function draw(){
+    t+=1;
+    ctx.clearRect(0,0,W,H);
+    const isDark=document.documentElement.getAttribute("data-theme")==="dark";
+    const layers=[
+      {amp:H*.1,  freq:0.007, speed:0.55, alpha:0.22, lw:1.8},
+      {amp:H*.07, freq:0.011, speed:0.38, alpha:0.14, lw:1.3},
+      {amp:H*.13, freq:0.005, speed:0.70, alpha:0.10, lw:1.0},
+      {amp:H*.05, freq:0.015, speed:0.25, alpha:0.08, lw:0.7},
+    ];
+    for(let i=0;i<layers.length;i++){
+      const l=layers[i];
+      const off=t*l.speed*0.01;
+      ctx.beginPath();
+      ctx.moveTo(0,H/2);
+      for(let x=0;x<=W;x+=3){
+        const y=H/2
+          +Math.sin(x*l.freq+off)*l.amp
+          +Math.sin(x*l.freq*.6+off*.8+i)*l.amp*.4;
+        if(x===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      const a=isDark?l.alpha:l.alpha*.7;
+      ctx.strokeStyle=`rgba(198,106,62,${a})`;
+      ctx.lineWidth=l.lw;
+      ctx.stroke();
+    }
+    // glow fill under top wave
+    const l0=layers[0]; const off0=t*l0.speed*0.01;
+    ctx.beginPath();
+    ctx.moveTo(0,H);
+    for(let x=0;x<=W;x+=3){
+      const y=H/2+Math.sin(x*l0.freq+off0)*l0.amp+Math.sin(x*l0.freq*.6+off0*.8)*l0.amp*.4;
+      ctx.lineTo(x,y);
+    }
+    ctx.lineTo(W,H); ctx.closePath();
+    const gr=ctx.createLinearGradient(0,0,0,H);
+    gr.addColorStop(0,"rgba(198,106,62,0.06)");
+    gr.addColorStop(1,"rgba(198,106,62,0)");
+    ctx.fillStyle=gr; ctx.fill();
+    raf=requestAnimationFrame(draw);
+  }
+  resize();
+  new ResizeObserver(()=>{resize();}).observe(canvas);
+  draw();
+};
+
+/* ============================================================
+   THEME
+   ============================================================ */
+const saved=localStorage.getItem("sm-theme")||"dark";
+document.documentElement.setAttribute("data-theme",saved);
+document.getElementById("themeLabel").textContent=saved==="light"?"Dark":"Light";
+document.querySelectorAll("#segTheme button").forEach(b=>b.classList.toggle("sel",b.dataset.v===saved));
+
+document.getElementById("themeToggle").addEventListener("click",()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  const next=cur==="light"?"dark":"light";
+  document.documentElement.setAttribute("data-theme",next);
+  document.getElementById("themeLabel").textContent=next==="light"?"Dark":"Light";
+  localStorage.setItem("sm-theme",next);
+  document.querySelectorAll("#segTheme button").forEach(b=>b.classList.toggle("sel",b.dataset.v===next));
+});
+
+/* ============================================================
+   TWEAKS
+   ============================================================ */
+window.addEventListener("message",(e)=>{
+  const d=e.data||{};
+  if(d.type==="__activate_edit_mode")document.getElementById("tweaks").classList.add("open");
+  if(d.type==="__deactivate_edit_mode")document.getElementById("tweaks").classList.remove("open");
+});
+try{window.parent.postMessage({type:"__edit_mode_available"},"*");}catch(_){}
+document.getElementById("tweaksClose").addEventListener("click",()=>document.getElementById("tweaks").classList.remove("open"));
+document.querySelectorAll("#swAccent .sw").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#swAccent .sw").forEach(x=>x.classList.toggle("sel",x===b));
+  document.documentElement.style.setProperty("--accent",`oklch(0.58 0.14 ${b.dataset.h})`);
+}));
+document.querySelectorAll("#segTheme button").forEach(b=>b.addEventListener("click",()=>{
+  const v=b.dataset.v;
+  const t=v==="system"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):v;
+  document.documentElement.setAttribute("data-theme",t);
+  document.getElementById("themeLabel").textContent=t==="light"?"Dark":"Light";
+  localStorage.setItem("sm-theme",v);
+  document.querySelectorAll("#segTheme button").forEach(x=>x.classList.toggle("sel",x===b));
+}));
+document.querySelectorAll("#segBg button").forEach(b=>b.addEventListener("click",()=>{
+  const on=b.dataset.v==="on";
+  document.querySelectorAll("#segBg button").forEach(x=>x.classList.toggle("sel",x===b));
+  const c=document.getElementById("site-bg-canvas");
+  c.style.opacity=on?"":"0";
+  if(window.__setBgEnabled)window.__setBgEnabled(on);
+}));
+
+/* ============================================================
+   MOBILE NAV
+   ============================================================ */
+(function(){
+  const ham=document.getElementById("navHamburger");
+  const links=document.getElementById("navLinks");
+  if(!ham||!links)return;
+  const setOpen=(open)=>{
+    links.classList.toggle("open",open);
+    ham.classList.toggle("open",open);
+    ham.setAttribute("aria-expanded",open?"true":"false");
+    ham.setAttribute("aria-label",open?"Close menu":"Open menu");
+    document.body.style.overflow=open?"hidden":"";
+  };
+  ham.addEventListener("click",()=>setOpen(!links.classList.contains("open")));
+  links.addEventListener("click",(e)=>{if(e.target.closest("a.navlink"))setOpen(false);});
+  window.addEventListener("resize",()=>{if(window.innerWidth>860)setOpen(false);});
+})();
+
+/* ============================================================
+   REEL MODAL
+   ============================================================ */
+(function(){
+  const overlay=document.getElementById("reelModal");
+  const frame=document.getElementById("reelFrame");
+  const closeBtn=document.getElementById("reelClose");
+  if(!overlay||!frame)return;
+  const open=()=>{
+    frame.src="Portfolio Ad.html";
     overlay.classList.add("open");
     overlay.setAttribute("aria-hidden","false");
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow="hidden";
   };
-  const close = () => {
+  const close=()=>{
     overlay.classList.remove("open");
     overlay.setAttribute("aria-hidden","true");
-    document.body.style.overflow = "";
-    setTimeout(() => { frame.src = "about:blank"; }, 260);
+    document.body.style.overflow="";
+    setTimeout(()=>{frame.src="about:blank";},260);
   };
-  document.addEventListener("click", (e) => {
-    const trigger = e.target.closest('[data-reel-trigger], a[href$="Portfolio%20Ad.html"], a[href$="Portfolio Ad.html"]');
-    if (trigger) {
-      e.preventDefault();
-      open();
+  document.addEventListener("click",(e)=>{
+    const trigger=e.target.closest('[data-reel-trigger]');
+    if(trigger){e.preventDefault();open();}
+  });
+  closeBtn.addEventListener("click",close);
+  overlay.addEventListener("click",(e)=>{if(e.target===overlay)close();});
+  document.addEventListener("keydown",(e)=>{if(e.key==="Escape"&&overlay.classList.contains("open"))close();});
+})();
+
+/* ============================================================
+   PORTFOLIO DATA
+   ============================================================ */
+const SM_DATA={
+  profile:{
+    name:"Sowvik Misra",
+    role:"AI & Automation Consultant · Creative Artist",
+    tagline:"Bridging the gap between structured logic and fluid rhythm.",
+    about:"With over 5 years in IT and 4+ years at Grant Thornton Indus, I specialize in architecting Agentic AI workflows, Copilot Studio solutions, and complex data pipelines. As a Firm-wide Copilot Champion, I've driven AI adoption at scale. Recognized by Microsoft and Snowflake product teams for early-preview community contributions. By night, I explore the rhythm of language through poetry and the language of rhythm through percussion - performing as a percussionist across instruments like Djembe, Darbuka, Cajon, Khanjira, Dholak, and Tambourine.",
+    email:"sowvikmisra2016@gmail.com",
+    phone:"+91 86174 90989",
+    socials:{
+      linkedin:"https://www.linkedin.com/in/sowvik-misra/",
+      instagram:"https://www.instagram.com/thoughts_by_sowvik",
+      medium:"https://medium.com"
+    },
+    awards:"Golden Socks AI · 10x Innovation (INDUS) · 5x Quarterly Award · People's Choice · Purple Star · High Performer · Super Trouper · AI Innovation Award",
+    impactStats:[
+      {v:"60+", l:"Automations & 15+ Agents shipped"},
+      {v:"$1M+",l:"Saved - Catalytic to Power Platform"},
+      {v:"50%", l:"Hiring efficiency increase"},
+      {v:"10+", l:"Analysts & consultants mentored"}
+    ]
+  },
+  skills:{
+    automation:["Copilot Studio","Power Automate","Power Apps","Catalytic","Adaptive Cards","Process Orchestration"],
+    dataAI:    ["M365 Copilot","Snowflake Cortex AI","Generative AI","Azure OpenAI","AI Builder","Agentic AI","Prompt Engineering"],
+    leadership:["Digital Transformation","Solution Design","Stakeholder Management","Team Mentorship","Thought Leadership"]
+  },
+  certifications:[
+    {id:1,  t:"Microsoft Certified AI Business Professional",                       i:"Microsoft"},
+    {id:2,  t:"Microsoft Certified Agentic AI Business Solutions Architect",       i:"Microsoft"},
+    {id:3,  t:"Microsoft Certified AI Transformational Leader",                    i:"Microsoft"},
+    {id:4,  t:"Microsoft Copilot Agent Academy Certified - Special Ops",           i:"Microsoft"},
+    {id:5,  t:"Microsoft Copilot Agent Academy Certified - Cowork Collectives",    i:"Microsoft"},
+    {id:6,  t:"Copilot Agent Academy - Operative",                                  i:"Microsoft"},
+    {id:7,  t:"Copilot Agent Academy - Recruit",                                    i:"Microsoft"},
+    {id:8,  t:"Applied Skills - Create agents in Copilot Studio",                   i:"Microsoft"},
+    {id:9,  t:"Applied Skills - Enhance agents with autonomous capabilities",       i:"Microsoft"},
+    {id:10, t:"Applied Skills - Streamline workflows with AI chat",                 i:"Microsoft"},
+    {id:11, t:"Applied Skills - Generate reports with AI research agents",          i:"Microsoft"},
+    {id:12, t:"Google Certified AI Business Professional",                          i:"Google"},
+    {id:13, t:"Google Certified AI Essentials",                                     i:"Google"},
+    {id:14, t:"Anthropic Certified AI Fluency: Framework & Foundations",            i:"Anthropic"},
+    {id:15, t:"Agent Skills with Anthropic",                                        i:"Anthropic"},
+    {id:16, t:"AI Fluency & Claude 101",                                            i:"Anthropic"},
+    {id:17, t:"Generative AI for Business Leaders",                                 i:"Professional Certificate"},
+    {id:18, t:"Snowpro Platform Associate",                                         i:"Snowflake"}
+  ],
+  thoughtLeadership:[
+    {id:1,type:"Series",title:"Copilot 101 Series",description:"Comprehensive LinkedIn series and newsletter covering Copilot Agents, M365 Copilot, Azure AI, and Power Platform AI.",tags:["LinkedIn","Microsoft AI","Newsletter"],fullContent:"A dedicated series aimed at demystifying Microsoft's Copilot ecosystem. It covers architectural deep-dives, prompt engineering best practices, and real-world enterprise use cases for Copilot Studio and M365 Copilot."},
+    {id:2,type:"Series",title:"Snowflake AI 101",description:"Deep dives into Snowflake Intelligence, Cortex Agents, Cortex functions, and Snowflake AI features.",tags:["Data Engineering","Snowflake Cortex","Newsletter"],fullContent:"Leveraging my early private preview access invited by the Snowflake Product Team, this series explores the practical applications of Snowflake Cortex AI, vector databases, and LLM integrations directly within data pipelines."},
+    {id:3,type:"Weekly",title:"Wednesday With AI",description:"A weekly digest summarizing the 7–8 latest AI industry news and breakthroughs every Wednesday.",tags:["Industry News","Generative AI"],fullContent:"A highly curated weekly roundup to keep my network updated on the rapidly evolving AI landscape, covering everything from foundational model releases to enterprise AI governance."},
+    {id:4,type:"Series",title:"Google AI Stack Series",description:"A 6-part series covering the Google AI ecosystem from personal productivity to enterprise development.",tags:["Google AI","Gemini","Enterprise"],fullContent:"Explored the capabilities of Google's AI offerings, demonstrating how to integrate tools like Gemini and Vertex AI into scalable business architectures."},
+    {id:5,type:"Series",title:"Claude Playbook Series",description:"A running playbook exploring the Claude AI stack - Projects, Artifacts, Computer Use, Agent Skills, and the MCP ecosystem.",tags:["Anthropic","Claude","Agentic AI"],fullContent:"The Claude Playbook is a deep-dive series on Anthropic's Claude stack and how to actually build with it. Each edition unpacks a specific capability - Claude Projects for long-running context, Artifacts for live generative UI, Computer Use for agentic workflows, Agent Skills for reusable expertise, and the Model Context Protocol (MCP) for connecting Claude to real business systems. Written for practitioners, it blends prompt patterns, architecture notes, and enterprise use cases drawn from my own builds."}
+  ],
+  techProjects:[
+    {id:1,title:"Catalytic → Power Platform Migration",description:"Spearheaded migration of 30+ legacy Catalytic applications to MS Power Platform, saving $1M+ in licensing and improving scalability.",tags:["Catalytic","Power Platform","Digital Transformation"],fullContent:"Led a firm-wide technology transition initiative. Refactored manual Excel-based processes and legacy workflows into highly optimized Power Automate and Power Apps solutions. Key challenges included mapping unstructured email data to database fields and ensuring rigorous data privacy compliance, ultimately resulting in massive cost savings and a 40% increase in processing speed."},
+    {id:2,title:"Autonomous Sales & Tax Agents",description:"Architected multi-modal, autonomous AI chatbots for sales and tax teams using Copilot Studio and Power Automate.",tags:["Copilot Studio","Agentic AI","Adaptive Cards"],fullContent:"Created comprehensive Conversational and Autonomous AI agents connecting to SharePoint and internal knowledge bases. Features include email monitoring via Power Automate, human-in-the-loop validation, custom PPT generation with embedded visuals, and weekly reporting via Adaptive Cards and Outlook Actionable Messages (OAMs)."},
+    {id:3,title:"HR Hiring Automation Pipeline",description:"Orchestrated the automation of the in-house Tax team's hiring process, increasing efficiency by 50%.",tags:["Process Orchestration","Power Automate","Compliance"],fullContent:"Eliminated the need for external third-party hiring tools, mitigating critical data privacy and compliance risks. This end-to-end automation saved the firm significant capital and drastically reduced the time-to-hire through optimized routing and tracking."},
+    {id:4,title:"Snowflake Cortex Resume Analyzer",description:"Power Platform AI & Snowflake Cortex AI based data pipeline analyzing resumes in real-time.",tags:["Snowflake","Python","Streamlit","Power Apps"],fullContent:"Designed a hybrid pipeline utilizing advanced AISQL functions, custom Python stored procedures, and Power Automate. The system extracts skills and insights from uploaded resumes, allows users to edit the extracted data via a Streamlit/Power Apps UI, and feeds a live, beautified analytics dashboard."},
+    {id:5,title:"Multi-Agent Marketing Orchestration",description:"Autonomous multi-agent orchestration for end-to-end marketing team process life cycles.",tags:["Copilot Studio","Agentic AI","Power Automate","M365"],fullContent:"Architected an end-to-end autonomous multi-agent framework utilizing Copilot Studio, Power Automate, Teams, SharePoint, and Outlook. Fully orchestrates the marketing lifecycle, featuring automated dynamic PPT creation, flowcharts, and document generation. Built with robust Human-In-The-Loop (HITL) checkpoints to ensure quality and control before taking agentic actions."}
+  ],
+  creativeWorks:[
+    {id:1,type:"Poetry",title:"I...",excerpt:"I was an unknown fiction,\nEncircled with its commotion…",link:"https://www.instagram.com/p/DIeaANpSUR6/",fullContent:"I was an unknown fiction\nEncircled with its commotion,\nLife seldom felt real\nAnd at times too ideal.\n\nI was never there\nNor was i supposed to be,\nI lived like a mere thought\nWhich i had wished to be."},
+    {id:2,type:"Percussion",title:"Rhythmic Convergence Live",excerpt:"A fusion performance mixing traditional dholak rhythms with cajon and darbuka.",fullContent:"This performance was an experiment in indo-fusion. Using a traditional beat on the dholak against a modern afro beat in cajon & darbuka, I attempted to show how ancient chaotic rhythms can harmonize with modern rigid structures. The set lasted 30 minutes and featured improvisation based on audience reaction."},
+    {id:3,type:"Percussion",title:"Jam Around the Block",excerpt:"Regular percussionist doing multiple performances at open jams.",fullContent:"I am a recurring percussionist at 'Jam Around the Block'. Participating in these open jam sessions allows me to collaborate with diverse, spontaneous groups of musicians, blending traditional beats with whatever genre the moment demands in a live, unscripted environment."},
+    {id:4,type:"Music",title:"Upcoming Band - Stay Tuned",excerpt:"Forming my own band to perform across Bangalore, covering the diverse music of India.",fullContent:"I am currently in the process of putting together my own band. We will be doing live shows across Bangalore, specifically focusing on covering the incredibly rich and diverse music of India. From folk roots to modern fusions - stay tuned for upcoming gig dates and announcements."},
+    {id:5,type:"Writing",title:"Circle of Life",excerpt:"A bed welcomes a new born,\nThe same bed mourns a departing soul…",link:"https://www.instagram.com/reel/DCyu1QuSN0_/",fullContent:"A bed welcomes a new born,\nThe same bed mourns a departing soul.\n\nThe stage is same\nOnly the curtain rises and falls."},
+    {id:6,type:"Initiative",title:"Community & CSR Crusader",excerpt:"Actively involved in driving multiple Corporate Social Responsibility and fitness initiatives.",fullContent:"Beyond technology and art, I am deeply passionate about community impact. I actively participate in and help organize Corporate Social Responsibility (CSR) events, and drive fitness initiatives to promote well-being and balance within the corporate ecosystem."}
+  ]
+};
+
+/* ============================================================
+   RENDER HELPERS
+   ============================================================ */
+const esc=(s="")=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+
+function renderHero(){
+  const p=SM_DATA.profile;
+  const stats=p.impactStats.map(s=>`
+    <div class="stat"><div class="v">${esc(s.v)}</div><div class="l">${esc(s.l)}</div></div>
+  `).join("");
+  return `
+    <section class="hero sm-hero reveal" id="about" data-screen-label="01 Hero">
+      <div class="eyebrow">
+        <span class="label">Portfolio · 2021 - 2026</span>
+        <span class="bar"></span>
+        <span class="label mono">build 8c2e1f · status <span style="color:var(--accent)">● live</span></span>
+      </div>
+      <div class="pretext" data-typewriter>
+        <span class="tw-key">$ currently</span>
+        <span class="tw-val"></span>
+        <span class="tw-cursor"></span>
+      </div>
+      <h1 class="role">${esc(p.role)}</h1>
+      <p class="tagline">${esc(p.tagline)}</p>
+      <p class="about-body">${esc(p.about)}</p>
+      <div class="awards-strip"><b>Key awards:</b> ${esc(p.awards)}</div>
+      <div class="impact">${stats}</div>
+
+      <div class="terminal" style="margin-top:36px">
+        <div class="term-bar">
+          <span class="dot red"></span><span class="dot yel"></span><span class="dot grn"></span>
+          <span class="path">sowvik@blr:<b>~/portfolio</b>$</span>
+          <span>./sowvik --mode=consulting --since=2021</span>
+          <span class="cursor"></span>
+          <span style="margin-left:auto;color:var(--fg-3)">tty/1 · 80×24 · utf-8</span>
+        </div>
+        <div class="wave-wrap">
+          <canvas class="wave-canvas" data-wave-canvas="" aria-hidden="true" width="1200" height="220"></canvas>
+          <div class="wave-overlay">
+            <div class="row" style="justify-content:space-between">
+              <div class="row">
+                <span><span class="pulse"></span><span class="v">NOW CONSULTING</span></span>
+                <span><span class="k">role</span> <span class="v">AI & Automation</span></span>
+                <span><span class="k">base</span> <span class="v">Bengaluru, IN</span></span>
+              </div>
+              <div class="vu" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="row" style="justify-content:space-between">
+              <span><span class="k">automations</span> <span class="v">60+ shipped</span></span>
+              <span><span class="k">agents</span> <span class="v">15+ running</span></span>
+              <span><span class="k">certs</span> <span class="v">18 active</span></span>
+              <span class="badge">Microsoft · Google · Anthropic · Snowflake · Azure AI</span>
+            </div>
+          </div>
+        </div>
+        <div class="boot" aria-hidden="true">
+          <span class="ln"><span class="t">[12.04.26 · 09:41]</span> <span class="lvl-ok">OK   </span> <span class="t">copilot   </span> <span class="v">studio agent "finance-ops" deployed · saves ~$420k/yr</span></span>
+          <span class="ln"><span class="t">[12.04.26 · 10:02]</span> <span class="lvl-run">RUN  </span> <span class="t">power-auto </span> <span class="v">catalytic → power platform migration · 24/24 flows green</span></span>
+          <span class="ln"><span class="t">[12.04.26 · 10:38]</span> <span class="lvl-info">INFO </span> <span class="t">cert       </span> <span class="v">anthropic · applied ai certified · 2025Q4</span></span>
+          <span class="ln"><span class="t">[12.04.26 · 11:15]</span> <span class="lvl-ok">OK   </span> <span class="t">thought-ldr</span> <span class="v">medium essay "agentic automation for ops" · 3.2k reads</span></span>
+          <span class="ln"><span class="t">[12.04.26 · 11:47]</span> <span class="lvl-info">INFO </span> <span class="t">music      </span> <span class="v">dholak + cajon + darbuka · tabla session recorded</span></span>
+          <span class="ln"><span class="t">[12.04.26 · 12:20]</span> <span class="lvl-ok">OK   </span> <span class="t">poetry     </span> <span class="v">published 3 pieces · bilingual (EN/HI)</span></span>
+          <span class="ln"><span class="t">[12.04.26 · 13:04]</span> <span class="lvl-run">RUN  </span> <span class="t">eval       </span> <span class="v">llm-guardrails · 142 traces · 0 regressions</span></span>
+          <span class="ln"><span class="t">[12.04.26 · 13:29]</span> <span class="lvl-warn">WARN </span> <span class="t">calendar   </span> <span class="v">q3 2026 availability: limited · 2 slots open</span></span>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <a href="#thought-leadership"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Thought Leadership</a>
+        <a href="#dev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Engineering</a>
+        <a href="#art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Artistry</a>
+        <a href="#" data-reel-trigger="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch 60s Intro Reel</a>
+      </div>
+    </section>`;
+}
+
+function renderStack(){
+  const s=SM_DATA.skills;
+  const block=(name,dot,arr)=>`
+    <div class="col">
+      <h3><span class="d" style="background:${dot}"></span>${name}</h3>
+      <div class="chips">${arr.map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+    </div>`;
+  return `
+    <section class="sec reveal" id="stack" data-screen-label="02 Stack">
+      <div class="sec-head"><span class="tag">01</span><h2>Core Competencies</h2><span class="bar"></span></div>
+      <div class="skill-cols">
+        ${block("Automation & Scale","oklch(0.65 0.15 240)",s.automation)}
+        ${block("GenAI & Data","oklch(0.62 0.18 300)",s.dataAI)}
+        ${block("Strategic Leadership","oklch(0.68 0.14 170)",s.leadership)}
+      </div>
+    </section>`;
+}
+
+function renderCerts(){
+  const rows=SM_DATA.certifications.map(c=>`
+    <div class="cert">
+      <div><div class="t">${esc(c.t)}</div><div class="i">${esc(c.i)}</div></div>
+    </div>
+  `).join("");
+  return `
+    <section class="sec reveal" id="certs" data-screen-label="03 Certs">
+      <div class="sec-head"><span class="tag">02</span><h2>Certifications</h2><span class="bar"></span></div>
+      <div class="cert-grid">${rows}</div>
+    </section>`;
+}
+
+function renderCards(list){
+  return list.map(it=>`
+    <div class="card" data-item-id="${it.id}" tabindex="0" role="button" aria-label="Open ${esc(it.title)}">
+      <div class="card-tags">${it.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>
+      <h3 class="card-title">${esc(it.title)}</h3>
+      <p class="card-desc">${esc(it.description)}</p>
+      <div class="card-more">Read more →</div>
+      <div class="card-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    </div>
+  `).join("");
+}
+
+function renderThought(){
+  return `
+    <section class="sec reveal" id="thought-leadership" data-screen-label="04 Thought Leadership">
+      <div class="sec-head"><span class="tag">03</span><h2>Thought Leadership & Community</h2><span class="bar"></span></div>
+      <div class="card-grid" data-cards="thought">${renderCards(SM_DATA.thoughtLeadership)}</div>
+    </section>`;
+}
+
+function renderDev(){
+  return `
+    <section class="sec reveal" id="dev" data-screen-label="05 Engineering">
+      <div class="sec-head"><span class="tag">04</span><h2>Engineering & Architecture</h2><span class="bar"></span></div>
+      <div class="card-grid" data-cards="dev">${renderCards(SM_DATA.techProjects)}</div>
+    </section>`;
+}
+
+function renderArt(){
+  const items=SM_DATA.creativeWorks.map(w=>`
+    <div class="tl-item">
+      <span class="tl-type">${esc(w.type)}</span>
+      <h3 class="tl-title">${esc(w.title)}</h3>
+      <p class="tl-excerpt">${esc(w.excerpt)}</p>
+      <button class="tl-cta" data-art-id="${w.id}">View context →</button>
+    </div>
+  `).join("");
+  return `
+    <section class="sec reveal" id="art" data-screen-label="06 Artistry">
+      <div class="sec-head"><span class="tag">05</span><h2>Creative Works & Initiatives</h2><span class="bar"></span></div>
+      <div class="timeline">${items}</div>
+    </section>`;
+}
+
+function renderContact(){
+  const p=SM_DATA.profile;
+  return `
+    <section class="contact-block reveal" id="contact" data-screen-label="07 Contact">
+      <div class="k">Contact · Q3 2026</div>
+      <h2>Let's make something<br/><span style="color:var(--fg-3)">that actually ships.</span></h2>
+      <p class="sub">Open to conversations about enterprise AI strategy, autonomous agents, or collaborating on creative rhythms. I reply to every thoughtful email.</p>
+      <div class="links">
+        <a href="${esc(p.socials.linkedin)}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="${esc(p.socials.instagram)}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+        <button id="copyEmail" class="copy-email-btn" style="display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border:1px solid var(--rule);font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--fg);background:var(--bg);cursor:pointer;transition:all 180ms ease">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Copy Email<span class="copy-toast" id="copyToast">Copied ✓</span>
+        </button>
+      </div>
+      <div class="meta">© ${new Date().getFullYear()} Sowvik Misra · Bengaluru, IN</div>
+    </section>`;
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+function openModal(item){
+  const ov=document.getElementById("smModal");
+  ov.querySelector(".type").textContent=item.type||"Project";
+  ov.querySelector(".title").textContent=item.title;
+  ov.querySelector(".body").textContent=item.fullContent||item.description||"";
+  const linkWrap=ov.querySelector("footer");
+  const link=ov.querySelector("footer a");
+  if(item.link&&item.link!=="#"){
+    link.href=item.link;
+    linkWrap.style.display="flex";
+  } else {
+    linkWrap.style.display="none";
+  }
+  ov.classList.add("open");
+  ov.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+}
+function closeModal(){
+  const ov=document.getElementById("smModal");
+  ov.classList.remove("open");
+  ov.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
+
+/* ============================================================
+   COPY EMAIL
+   ============================================================ */
+function copyEmail(){
+  const email=SM_DATA.profile.email;
+  const done=()=>{
+    const t=document.getElementById("copyToast");
+    if(t){t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1600);}
+  };
+  function fallback(){
+    const ta=document.createElement("textarea");
+    ta.value=email;document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");done();}catch(e){}
+    document.body.removeChild(ta);
+  }
+  if(navigator.clipboard?.writeText){
+    navigator.clipboard.writeText(email).then(done).catch(fallback);
+  } else {fallback();}
+}
+
+/* ============================================================
+   TYPEWRITER
+   ============================================================ */
+const TW_POOL=[
+  {k:"whoami",     v:"sowvik - ai & automation consultant · artist"},
+  {k:"role",       v:"firm-wide copilot champion · grant thornton indus"},
+  {k:"shipping",   v:"autonomous multi-agent marketing orchestration"},
+  {k:"reading",    v:"agentic design patterns · copilot studio docs"},
+  {k:"listening",  v:"dholak · cajon · darbuka · live jams"},
+  {k:"thinking",   v:"structured logic ↔ fluid rhythm"},
+  {k:"stack",      v:"copilot studio · power automate · snowflake · azure openai"},
+  {k:"coffee",     v:"filter · black · brewed 08:14 ist"},
+  {k:"currently",  v:"open to collaborations · q3 2026"},
+  {k:"last ship",  v:"snowflake cortex resume analyzer · live"}
+];
+const wait=(ms)=>new Promise(r=>setTimeout(r,ms));
+async function smTypewriter(el){
+  let i=0;
+  while(el.isConnected){
+    const{k,v}=TW_POOL[i%TW_POOL.length];i++;
+    el.querySelector(".tw-key").textContent="$ "+k;
+    const out=el.querySelector(".tw-val");out.textContent="";
+    for(let c=0;c<=v.length;c++){out.textContent=v.slice(0,c);await wait(18+Math.random()*32);}
+    await wait(2400);
+    for(let c=v.length;c>=0;c--){out.textContent=v.slice(0,c);await wait(8+Math.random()*10);}
+    await wait(260);
+  }
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+function initReveal(){
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");io.unobserve(e.target);}});
+  },{threshold:0.08,rootMargin:"0px 0px -40px 0px"});
+  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+document.addEventListener("DOMContentLoaded",()=>{
+  const main=document.getElementById("smMain");
+  main.innerHTML=[
+    renderHero(),
+    renderStack(),
+    renderCerts(),
+    renderThought(),
+    renderDev(),
+    renderArt(),
+    renderContact()
+  ].join("");
+
+  // typewriter
+  document.querySelectorAll("[data-typewriter]").forEach(el=>smTypewriter(el));
+
+  // wave canvas
+  document.querySelectorAll("[data-wave-canvas]").forEach(c=>window.mountWaveCanvas(c));
+
+  // scroll reveal
+  requestAnimationFrame(initReveal);
+
+  // card / art clicks
+  main.addEventListener("click",(e)=>{
+    const card=e.target.closest("[data-item-id]");
+    if(card){
+      const id=Number(card.dataset.itemId);
+      const parent=card.closest("[data-cards]");
+      const list=parent?.dataset.cards==="dev"?SM_DATA.techProjects:SM_DATA.thoughtLeadership;
+      const item=list.find(x=>x.id===id);
+      if(item)openModal(item);
+      return;
+    }
+    const art=e.target.closest("[data-art-id]");
+    if(art){
+      const id=Number(art.dataset.artId);
+      const item=SM_DATA.creativeWorks.find(x=>x.id===id);
+      if(item)openModal(item);
+      return;
+    }
+    if(e.target.id==="copyEmail"||e.target.closest("#copyEmail")){
+      copyEmail();
     }
   });
-  closeBtn.addEventListener("click", close);
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && overlay.classList.contains("open")) close();
+
+  // keyboard accessibility
+  main.addEventListener("keydown",(e)=>{
+    if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-item-id]")){
+      e.preventDefault();e.target.click();
+    }
   });
-})();
 
-/* theme */
-const saved = localStorage.getItem("sm-theme") || "dark";
-document.documentElement.setAttribute("data-theme", saved);
-document.getElementById("themeLabel").textContent = saved === "light" ? "Dark" : "Light";
-document.getElementById("themeToggle").addEventListener("click", () => {
-  const cur = document.documentElement.getAttribute("data-theme");
-  const next = cur === "light" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", next);
-  document.getElementById("themeLabel").textContent = next === "light" ? "Dark" : "Light";
-  localStorage.setItem("sm-theme", next);
-  document.querySelectorAll("#segTheme button").forEach(b => b.classList.toggle("sel", b.dataset.v === next));
-});
+  // modal close
+  const ov=document.getElementById("smModal");
+  ov.addEventListener("click",(e)=>{if(e.target===ov)closeModal();});
+  ov.querySelector("header button").addEventListener("click",closeModal);
+  document.addEventListener("keydown",(e)=>{if(e.key==="Escape")closeModal();});
 
-/* tweaks */
-window.addEventListener("message", (e) => {
-  const d = e.data || {};
-  if (d.type === "__activate_edit_mode")   document.getElementById("tweaks").classList.add("open");
-  if (d.type === "__deactivate_edit_mode") document.getElementById("tweaks").classList.remove("open");
-});
-try { window.parent.postMessage({type:"__edit_mode_available"}, "*"); } catch(_) {}
-document.getElementById("tweaksClose").addEventListener("click", () => document.getElementById("tweaks").classList.remove("open"));
-document.querySelectorAll("#swAccent .sw").forEach(b => b.addEventListener("click", () => {
-  document.querySelectorAll("#swAccent .sw").forEach(x => x.classList.toggle("sel", x === b));
-  document.documentElement.style.setProperty("--accent", `oklch(0.58 0.14 ${b.dataset.h})`);
-}));
-document.querySelectorAll("#segTheme button").forEach(b => b.addEventListener("click", () => {
-  const v = b.dataset.v;
-  const t = v === "system" ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : v;
-  document.documentElement.setAttribute("data-theme", t);
-  document.getElementById("themeLabel").textContent = t === "light" ? "Dark" : "Light";
-  localStorage.setItem("sm-theme", v);
-  document.querySelectorAll("#segTheme button").forEach(x => x.classList.toggle("sel", x === b));
-}));
-
-/* mobile nav (hamburger) */
-(function(){
-  const ham = document.getElementById("navHamburger");
-  const links = document.getElementById("navLinks");
-  if (!ham || !links) return;
-  const setOpen = (open) => {
-    links.classList.toggle("open", open);
-    ham.classList.toggle("open", open);
-    ham.setAttribute("aria-expanded", open ? "true" : "false");
-    ham.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    document.body.style.overflow = open ? "hidden" : "";
+  // active nav on scroll
+  const sections=document.querySelectorAll("section[id]");
+  const navLinks=document.querySelectorAll(".navlink[href^='#']");
+  const scrollSpy=()=>{
+    let cur="";
+    sections.forEach(s=>{
+      if(window.scrollY>=s.offsetTop-120)cur=s.id;
+    });
+    navLinks.forEach(a=>{
+      const matches=a.getAttribute("href")==="#"+cur;
+      a.toggleAttribute("aria-current",matches);
+      if(matches)a.setAttribute("aria-current","page");
+      else a.removeAttribute("aria-current");
+    });
   };
-  ham.addEventListener("click", () => setOpen(!links.classList.contains("open")));
-  links.addEventListener("click", (e) => {
-    if (e.target.closest("a.navlink")) setOpen(false);
-  });
-  window.addEventListener("resize", () => { if (window.innerWidth > 860) setOpen(false); });
-})();
+  window.addEventListener("scroll",scrollSpy,{passive:true});
+  scrollSpy();
+});
 </script>
-
-<!-- flowing wave background (same as main site) -->
-<script src="../js/site-bg.js"></script>
-<!-- hero terminal wave canvas -->
-<script src="../js/waves.js"></script>
-<!-- page content + modal -->
-<script src="sm-portfolio.js?v=6"></script>
 </body>
 </html>
